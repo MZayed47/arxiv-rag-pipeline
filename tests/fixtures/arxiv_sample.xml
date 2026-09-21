@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:arxiv="http://arxiv.org/schemas/atom"
+      xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+  <opensearch:totalResults>2</opensearch:totalResults>
+  <entry>
+    <id>http://arxiv.org/abs/2401.12345v2</id>
+    <updated>2024-02-01T10:00:00Z</updated>
+    <published>2024-01-15T12:00:00Z</published>
+    <title>Retrieval Augmented
+  Generation for Scientific
+  Abstracts</title>
+    <summary>  We present a system   that retrieves papers
+and grounds answers in $O(n)$ time.
+    </summary>
+    <author><name>Ada Lovelace</name></author>
+    <author><name>Alan Turing</name></author>
+    <arxiv:doi>10.1000/test.2024.1</arxiv:doi>
+    <arxiv:journal_ref>Journal of Tests, 12(3), 2024</arxiv:journal_ref>
+    <arxiv:primary_category term="cs.IR"/>
+    <category term="cs.IR"/>
+    <category term="cs.CL"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2402.00001v1</id>
+    <updated>2024-02-02T08:30:00Z</updated>
+    <published>2024-02-02T08:30:00Z</published>
+    <title>A Paper Without Metadata</title>
+    <summary>No doi and no journal reference here.</summary>
+    <author><name>Grace Hopper</name></author>
+    <arxiv:primary_category term="cs.LG"/>
+    <category term="cs.LG"/>
+  </entry>
+</feed>
