@@ -36,7 +36,7 @@ DB_POOL_MAX_SIZE = int(os.getenv("DB_POOL_MAX_SIZE", "10"))
 MIGRATIONS_DIR = ROOT / "migrations"
 
 # --- API -------------------------------------------------------------------
-API_PORT = int(os.getenv("API_PORT", "8000"))
+API_PORT = int(os.getenv("API_PORT", "5088"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 RUN_MIGRATIONS_ON_STARTUP = _bool("RUN_MIGRATIONS_ON_STARTUP", True)
 
@@ -48,7 +48,7 @@ ARXIV_BATCH_SIZE = int(os.getenv("ARXIV_BATCH_SIZE", "200"))
 ARXIV_REQUEST_DELAY = float(os.getenv("ARXIV_REQUEST_DELAY", "3.0"))
 ARXIV_TIMEOUT = int(os.getenv("ARXIV_TIMEOUT", "60"))
 ARXIV_MAX_RETRIES = int(os.getenv("ARXIV_MAX_RETRIES", "5"))
-ARXIV_CONTACT_EMAIL = os.getenv("ARXIV_CONTACT_EMAIL", "you@example.com")
+ARXIV_CONTACT_EMAIL = os.getenv("ARXIV_CONTACT_EMAIL", "mashrukh.zayed.official@gmail.com")
 ARXIV_USER_AGENT = (
     f"ArxivRagPipeline/1.0 (research assignment; contact: {ARXIV_CONTACT_EMAIL})"
 )

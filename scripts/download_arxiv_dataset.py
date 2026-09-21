@@ -78,7 +78,7 @@ MAX_RETRIES = 5
 
 USER_AGENT = (
     "ArxivDatasetCollector/1.0 "
-    "(research dataset collection; contact: your-email@example.com)"
+    "(research dataset collection; contact: mashrukh.zayed.official@gmail.com)"
 )
 
 

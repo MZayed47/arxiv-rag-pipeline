@@ -96,11 +96,11 @@ docker compose run --rm ingest
 Check it:
 
 ```bash
-curl http://localhost:8000/health
-curl http://localhost:8000/api/v1/stats/summary
+curl http://localhost:5088/health
+curl http://localhost:5088/api/v1/stats/summary
 ```
 
-Interactive docs: <http://localhost:8000/docs>
+Interactive docs: <http://localhost:5088/docs>
 
 ## Local development (no Docker)
 
@@ -112,7 +112,7 @@ cp .env.example .env          # set DB_HOST=localhost
 docker compose up -d db       # or use your own Postgres with the vector extension
 python -m app.db.migrate up
 python -m ingestion.run_ingestion ingest
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload --port 5088
 ```
 
 ---
@@ -123,7 +123,7 @@ uvicorn app.main:app --reload --port 8000
 |---|---|---|
 | `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | `db` / `5432` / `arxiv_db` / `postgres` / `postgres` | `DATABASE_URL` overrides all of them |
 | `DB_PORT_HOST` | `5432` | host port Postgres is published on |
-| `API_PORT` | `8000` | |
+| `API_PORT` | `5088` | |
 | `LOG_LEVEL` | `INFO` | |
 | `RUN_MIGRATIONS_ON_STARTUP` | `true` | API applies pending migrations on boot |
 | `ARXIV_CATEGORIES` | `cs.AI,cs.LG,cs.CL,cs.CV,cs.IR` | |
@@ -185,17 +185,17 @@ arXiv.
 ### `GET /api/v1/stats/summary`
 
 ```bash
-curl http://localhost:8000/api/v1/stats/summary
+curl http://localhost:5088/api/v1/stats/summary
 ```
 
 ```json
 {
   "total_papers": 1000,
-  "total_authors": 4312,
-  "total_categories": 78,
+  "total_authors": 5456,
+  "total_categories": 63,
   "embedded_papers": 1000,
-  "earliest_published": "2025-11-02T18:41:09Z",
-  "latest_published": "2026-02-18T17:55:03Z"
+  "earliest_published": "2026-08-27T19:12:33Z",
+  "latest_published": "2026-09-18T17:59:56Z"
 }
 ```
 
@@ -205,23 +205,76 @@ Query params: `granularity` (`day|month|year`, default `month`), `category`,
 `start`, `end`.
 
 ```bash
-curl "http://localhost:8000/api/v1/stats/papers-over-time?granularity=month&category=cs.LG"
+curl "http://localhost:5088/api/v1/stats/papers-over-time?granularity=month&category=cs.LG"
 ```
 
 ```json
 [
-  { "period": "2025-11", "paper_count": 41 },
-  { "period": "2025-12", "paper_count": 63 },
-  { "period": "2026-01", "paper_count": 58 }
+  {
+    "period": "2026-08",
+    "paper_count": 3
+  },
+  {
+    "period": "2026-09",
+    "paper_count": 298
+  }
 ]
 ```
 
-### `GET /api/v1/stats/top-categories?limit=5`
+### `GET /api/v1/stats/top-categories?limit=10`
 
 ```json
 [
-  { "category": "cs.LG", "paper_count": 412, "primary_count": 200 },
-  { "category": "cs.AI", "paper_count": 388, "primary_count": 200 }
+  {
+    "category": "cs.AI",
+    "paper_count": 365,
+    "primary_count": 200
+  },
+  {
+    "category": "cs.LG",
+    "paper_count": 301,
+    "primary_count": 200
+  },
+  {
+    "category": "cs.CL",
+    "paper_count": 270,
+    "primary_count": 200
+  },
+  {
+    "category": "cs.CV",
+    "paper_count": 218,
+    "primary_count": 200
+  },
+  {
+    "category": "cs.IR",
+    "paper_count": 212,
+    "primary_count": 200
+  },
+  {
+    "category": "cs.RO",
+    "paper_count": 36,
+    "primary_count": 0
+  },
+  {
+    "category": "cs.CY",
+    "paper_count": 21,
+    "primary_count": 0
+  },
+  {
+    "category": "stat.ML",
+    "paper_count": 20,
+    "primary_count": 0
+  },
+  {
+    "category": "cs.MA",
+    "paper_count": 16,
+    "primary_count": 0
+  },
+  {
+    "category": "cs.HC",
+    "paper_count": 14,
+    "primary_count": 0
+  }
 ]
 ```
 
@@ -232,8 +285,26 @@ whose primary category is that code.
 
 ```json
 [
-  { "author": "Wei Zhang", "paper_count": 7 },
-  { "author": "Yang Liu", "paper_count": 6 }
+  {
+    "author": "Fan Zhang",
+    "paper_count": 5
+  },
+  {
+    "author": "Yu Liu",
+    "paper_count": 5
+  },
+  {
+    "author": "Dmitrij Żatuchin",
+    "paper_count": 4
+  },
+  {
+    "author": "Min Zhang",
+    "paper_count": 4
+  },
+  {
+    "author": "Wei Li",
+    "paper_count": 4
+  }
 ]
 ```
 
@@ -241,23 +312,66 @@ whose primary category is that code.
 
 ```json
 {
-  "average": 4.37,
-  "median": 4.0,
+  "average": 5.81,
+  "median": 4,
   "minimum": 1,
-  "maximum": 31,
-  "distribution": [{ "author_count": 1, "paper_count": 46 }]
+  "maximum": 588,
+  "distribution": [
+    {
+      "author_count": 1,
+      "paper_count": 82
+    },
+    {
+      "author_count": 2,
+      "paper_count": 131
+    },
+    {
+      "author_count": 3,
+      "paper_count": 165
+    },
+    {
+      "author_count": 4,
+      "paper_count": 170
+    },
+    {
+      "author_count": 5,
+      "paper_count": 122
+    },
+  ]
 }
 ```
 
-### `GET /api/v1/stats/category-trends?limit=3&granularity=month`
+### `GET /api/v1/stats/category-trends?limit=2&granularity=month`
 
 One time series per top category, ready to plot as multiple lines.
 
 ```json
 [
   {
+    "category": "cs.AI",
+    "points": [
+      {
+        "period": "2026-08",
+        "paper_count": 8
+      },
+      {
+        "period": "2026-09",
+        "paper_count": 357
+      }
+    ]
+  },
+  {
     "category": "cs.LG",
-    "points": [{ "period": "2025-12", "paper_count": 63 }]
+    "points": [
+      {
+        "period": "2026-08",
+        "paper_count": 3
+      },
+      {
+        "period": "2026-09",
+        "paper_count": 298
+      }
+    ]
   }
 ]
 ```
@@ -269,7 +383,7 @@ One time series per top category, ready to plot as multiple lines.
 ### `POST /api/v1/ask`
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/ask \
+curl -X POST http://localhost:5088/api/v1/ask \
   -H "Content-Type: application/json" \
   -d '{"question": "What approaches are used for retrieval augmented generation?", "top_k": 5}'
 ```
@@ -277,16 +391,80 @@ curl -X POST http://localhost:8000/api/v1/ask \
 ```json
 {
   "question": "What approaches are used for retrieval augmented generation?",
-  "answer": "Several papers combine dense retrieval with a generator ... [2602.01234] ... reranking of retrieved passages before generation [2601.09988].",
+  "answer": "Approaches used for retrieval augmented generation include:\n\n*   **Query-adaptive frameworks** that dynamically select retriever-generator configurations, such as DRAG. This framework includes DRAG_\\text",
   "sources": [
     {
-      "arxiv_id": "2602.01234",
-      "title": "Dense Retrieval with Cross-Encoder Reranking",
-      "authors": ["Ada Lovelace", "Alan Turing"],
+      "arxiv_id": "2609.17709",
+      "title": "One Size Does Not Fit All! Dynamic Retriever and Generator Selection for RAG",
+      "authors": [
+        "Neeraj Anand",
+        "Payel Santra",
+        "Partha Basuchowdhuri",
+        "Debasis Ganguly",
+        "Sumit Bhatia"
+      ],
       "primary_category": "cs.IR",
-      "published": "2026-02-03T09:12:00Z",
-      "score": 0.7412,
-      "url": "https://arxiv.org/abs/2602.01234"
+      "published": "2026-09-15T18:20:38Z",
+      "score": 0.5051,
+      "url": "https://arxiv.org/abs/2609.17709"
+    },
+    {
+      "arxiv_id": "2609.10239",
+      "title": "LiteRAG: Cost-Efficient Graph-Based Retrieval-Augmented Generation",
+      "authors": [
+        "Daniel Alejandro Coll Tejeda",
+        "Pedro García López",
+        "Daniel Barcelona-Pons"
+      ],
+      "primary_category": "cs.IR",
+      "published": "2026-09-09T14:32:07Z",
+      "score": 0.4776,
+      "url": "https://arxiv.org/abs/2609.10239"
+    },
+    {
+      "arxiv_id": "2609.11390",
+      "title": "VikingRAG: Accurate and Token-efficient Retrieval-augmented Generation over Structured Documents",
+      "authors": [
+        "Peiyuan Gao",
+        "Gaoyuan Zhang",
+        "Haojie Qin",
+        "Yahui Sun",
+        "Qianyi Zhang",
+        "Yunhao Zhang",
+        "Zeyu Wang",
+        "Wei Lu"
+      ],
+      "primary_category": "cs.IR",
+      "published": "2026-09-10T11:25:59Z",
+      "score": 0.5864,
+      "url": "https://arxiv.org/abs/2609.11390"
+    },
+    {
+      "arxiv_id": "2609.00638",
+      "title": "It Takes Two to Match: Co-Evolving Generative Retriever with Reinforcement Learning",
+      "authors": [
+        "Runpeng Dai",
+        "Kaili Huang",
+        "Changsung Kang",
+        "Ciya Liao"
+      ],
+      "primary_category": "cs.IR",
+      "published": "2026-09-01T03:17:02Z",
+      "score": 0.5435,
+      "url": "https://arxiv.org/abs/2609.00638"
+    },
+    {
+      "arxiv_id": "2609.11646",
+      "title": "Your Retriever Already Knows: Distribution-Shape QPP for RAG Retrieval Sufficiency",
+      "authors": [
+        "Matyáš Veselý",
+        "Michal Průšek",
+        "Jiří Franc"
+      ],
+      "primary_category": "cs.IR",
+      "published": "2026-09-10T14:52:16Z",
+      "score": 0.5138,
+      "url": "https://arxiv.org/abs/2609.11646"
     }
   ],
   "grounded": true

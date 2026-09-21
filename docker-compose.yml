@@ -26,7 +26,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
     ports:
-      - "${API_PORT:-8000}:8000"
+      - "${API_PORT:-5088}:5088"
     volumes:
       - hf_cache:/root/.cache/huggingface
     depends_on:
